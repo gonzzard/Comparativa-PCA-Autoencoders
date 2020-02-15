@@ -61,7 +61,7 @@ def visualizeSamples(x_train, y_train, x_test, y_test):
         f.show()
 
 def visualize2DMapPCA(num, pComponentsDf_train, numeros_train):
-    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
+    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '#2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
             6: '#e377c2', 7: '#7f7f7f', 8: '#bcbd22', 9: '#17becf'}
 
     colores = [colormap[x] for x in pComponentsDf_train.loc[ :num, "y"]]
@@ -96,7 +96,7 @@ def visualize2DMapPCA(num, pComponentsDf_train, numeros_train):
 
 
 def visualize2DMapMLP(num, pComponentsDf_train, numeros_train, encoded):
-    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
+    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '#2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
             6: '#e377c2', 7: '#7f7f7f', 8: '#bcbd22', 9: '#17becf'}
 
     colores = [colormap[x] for x in pComponentsDf_train.loc[ :num, "y"]]
@@ -130,7 +130,7 @@ def visualize2DMapMLP(num, pComponentsDf_train, numeros_train, encoded):
     show(p)   
 
 def visualize2DMapConvNet(num, pComponentsDf_train, numeros_train):
-    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
+    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '#2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
            6: '#e377c2', 7: '#7f7f7f', 8: '#bcbd22', 9: '#17becf'}
 
     colores = [colormap[x] for x in pComponentsDf_train.loc[ :num, "y"]]
@@ -162,3 +162,39 @@ def visualize2DMapConvNet(num, pComponentsDf_train, numeros_train):
     p.tools.append(hover)
     p.circle(x='x', y='y', source=source, color='color', fill_alpha=0.2, size=10)
     show(p)
+
+
+def Plot2D(Num=1000, Images, X, Y, Numbers):
+    colormap = {0: '#1f77b4', 1: '#ff7f0e', 2: '#2ca02c', 3: '#d62728', 4: '#9467bd', 5: '#8c564b',
+        6: '#e377c2', 7: '#7f7f7f', 8: '#bcbd22', 9: '#17becf'}
+
+    colors = [colormap[x] for x in Numbers[:Num]]
+    value = [x for x in Numbers[:Num]]
+
+    files = b64_image_files(train_numbers[:Num])
+
+    source = ColumnDataSource(Images=dict(
+        x=X,
+        y=Y,
+        imgs=files,
+        color=colors,
+        value=value
+    ))
+
+    TOOLTIPS = """
+        <div>
+            <div>
+                <img src="@imgs" height="40" width="40"
+                    style="float: left; margin: 0px 15px 15px 0px;"
+                    border="2"/>                
+                <b>@value</b>            
+            </div>
+        </div>
+    """
+
+    p = figure(plot_width=950, plot_height=950)
+    hover = HoverTool()
+    hover.tooltips = TOOLTIPS
+    p.tools.append(hover)        
+    p.circle(x='x', y='y', source=source, color='color', fill_alpha=0.2, size=10)
+    show(p)    
